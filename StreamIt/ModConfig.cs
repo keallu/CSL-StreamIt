@@ -9,6 +9,12 @@
         public string Suffix { get; set; }
         public float Width { get; set; }
         public float TextScale { get; set; }
+        public float Speed { get; set; }
+        public string FileName { get; set; }
+        public bool IncludeTimestampInFileName { get; set; }
+        public bool IncludeDisabledMods { get; set; }
+        public bool IncludeBuiltinMods { get; set; }
+        public bool IncludeLocaleMods { get; set; }
 
         private static ModConfig instance;
 

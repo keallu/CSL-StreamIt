@@ -230,7 +230,7 @@ namespace StreamIt
                 ValueAnimator.Animate("StreamItScrolling", delegate (float val)
                 {
                     _marqueeScrollablePanel.scrollPosition = new Vector2(val, 0f);
-                }, new AnimatedFloat(0f, overrun, overrun / 20f), delegate
+                }, new AnimatedFloat(0f, overrun, overrun / ModConfig.Instance.Speed), delegate
                 {
                     OnCompletedScrolling();
                 });

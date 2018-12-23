@@ -55,6 +55,56 @@ namespace StreamIt
                 ModConfig.Instance.TextScale = sel;
                 ModConfig.Instance.Save();
             });
+
+            selectedValue = ModConfig.Instance.Speed != 0f ? ModConfig.Instance.Speed : 20f;
+
+            group.AddSlider("Speed", 5f, 50f, 0.5f, selectedValue, sel =>
+            {
+                ModConfig.Instance.Speed = sel;
+                ModConfig.Instance.Save();
+            });
+
+            group = helper.AddGroup("Export to file");
+
+            selectedText = ModConfig.Instance.FileName ?? "";
+            group.AddTextfield("File name", selectedText, sel =>
+            {
+                ModConfig.Instance.FileName = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selected = ModConfig.Instance.IncludeTimestampInFileName;
+            group.AddCheckbox("Include timestamp in file name", selected, sel =>
+            {
+                ModConfig.Instance.IncludeTimestampInFileName = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selected = ModConfig.Instance.IncludeDisabledMods;
+            group.AddCheckbox("Include disabled mods", selected, sel =>
+            {
+                ModConfig.Instance.IncludeDisabledMods = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selected = ModConfig.Instance.IncludeBuiltinMods;
+            group.AddCheckbox("Include builtin mods", selected, sel =>
+            {
+                ModConfig.Instance.IncludeBuiltinMods = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selected = ModConfig.Instance.IncludeLocaleMods;
+            group.AddCheckbox("Include locale mods", selected, sel =>
+            {
+                ModConfig.Instance.IncludeLocaleMods = sel;
+                ModConfig.Instance.Save();
+            });
+
+            group.AddButton("Export", () =>
+            {
+                StreamUtils.ExportToFile(ModConfig.Instance.FileName, ModConfig.Instance.IncludeTimestampInFileName, ModConfig.Instance.IncludeDisabledMods, ModConfig.Instance.IncludeBuiltinMods, ModConfig.Instance.IncludeLocaleMods);
+            });
         }
     }
 }

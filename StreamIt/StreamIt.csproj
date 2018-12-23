@@ -59,6 +59,7 @@
     <Compile Include="ModInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StreamPanel.cs" />
+    <Compile Include="StreamUtils.cs" />
     <Compile Include="UIUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
