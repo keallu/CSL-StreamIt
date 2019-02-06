@@ -54,11 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
-    <Compile Include="Loader.cs" />
+    <Compile Include="Loading.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StreamPanel.cs" />
+    <Compile Include="Streamer.cs" />
     <Compile Include="StreamUtils.cs" />
     <Compile Include="UIUtils.cs" />
   </ItemGroup>

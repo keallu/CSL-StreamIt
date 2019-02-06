@@ -6,7 +6,7 @@ using UnityEngine;
 namespace StreamIt
 {
 
-    public class Loader : LoadingExtensionBase
+    public class Loading : LoadingExtensionBase
     {
         private LoadMode _loadMode;
         private GameObject _gameObject;
@@ -25,14 +25,14 @@ namespace StreamIt
                 UIView objectOfType = UnityEngine.Object.FindObjectOfType<UIView>();
                 if (objectOfType != null)
                 {
-                    _gameObject = new GameObject("StreamPanel");
+                    _gameObject = new GameObject("StreamItStreamer");
                     _gameObject.transform.parent = objectOfType.transform;
-                    _gameObject.AddComponent<StreamPanel>();
+                    _gameObject.AddComponent<Streamer>();
                 }
             }
             catch (Exception e)
             {
-                Debug.Log("[Stream It!] Loader:OnLevelLoaded -> Exception: " + e.Message);
+                Debug.Log("[Stream It!] Loading:OnLevelLoaded -> Exception: " + e.Message);
             }
         }
 
@@ -54,7 +54,7 @@ namespace StreamIt
             }
             catch (Exception e)
             {
-                Debug.Log("[Stream It!] Loader:OnLevelUnloading -> Exception: " + e.Message);
+                Debug.Log("[Stream It!] Loading:OnLevelUnloading -> Exception: " + e.Message);
             }
         }
     }

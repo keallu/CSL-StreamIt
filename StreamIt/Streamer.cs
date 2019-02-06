@@ -8,23 +8,25 @@ using UnityEngine;
 
 namespace StreamIt
 {
-    class StreamPanel : MonoBehaviour
+    class Streamer : MonoBehaviour
     {
         private bool _initialized;
 
-        private bool _isScrolling;
-        private UIScrollablePanel _marqueeScrollablePanel;
-        private UILabel _marqueeLabel;
-
         private UIComponent _chirperPanel;
         private bool _wasChirperPanelEnabled;
+
+        private bool _isScrolling;
+        private UIScrollablePanel _marqueeScrollablePanel;
+        private UIDragHandle _marqueeDragHandle;
+        private UILabel _marqueeLabel;
 
         private void Awake()
         {
             try
             {
                 _chirperPanel = GameObject.Find("ChirperPanel").GetComponent<UIComponent>();
-                _wasChirperPanelEnabled = _chirperPanel.isEnabled;
+
+                _wasChirperPanelEnabled = _chirperPanel != null ? _chirperPanel.isEnabled : false;
 
                 CreateMarquee();
             }
@@ -42,7 +44,7 @@ namespace StreamIt
             }
             catch (Exception e)
             {
-                Debug.Log("[Stream It!] StreamPanel:OnEnable -> Exception: " + e.Message);
+                Debug.Log("[Stream It!] Streamer:OnEnable -> Exception: " + e.Message);
             }
         }
 
@@ -54,7 +56,7 @@ namespace StreamIt
             }
             catch (Exception e)
             {
-                Debug.Log("[Stream It!] StreamPanel:Start -> Exception: " + e.Message);
+                Debug.Log("[Stream It!] Streamer:Start -> Exception: " + e.Message);
             }
         }
 
@@ -97,7 +99,31 @@ namespace StreamIt
             }
             catch (Exception e)
             {
-                Debug.Log("[Stream It!] StreamPanel:Update -> Exception: " + e.Message);
+                Debug.Log("[Stream It!] Streamer:Update -> Exception: " + e.Message);
+            }
+        }
+
+        private void OnDisable()
+        {
+            try
+            {
+
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Stream It!] Streamer:OnDisable -> Exception: " + e.Message);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            try
+            {
+
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Stream It!] Streamer:OnDestroy -> Exception: " + e.Message);
             }
         }
 
@@ -132,7 +158,7 @@ namespace StreamIt
             }
             catch (Exception e)
             {
-                Debug.Log("[Stream It!] StreamPanel:GenerateMarqueeText -> Exception: " + e.Message);
+                Debug.Log("[Stream It!] Streamer:GenerateMarqueeText -> Exception: " + e.Message);
             }
 
             return marquee;
@@ -147,17 +173,38 @@ namespace StreamIt
                 if (infoPanel != null)
                 {
                     _marqueeScrollablePanel = UIUtils.CreateScrollablePanel(infoPanel, "StreamItMarqueeScrollablePanel");
-                    _marqueeScrollablePanel.autoLayout = true;
-                    _marqueeScrollablePanel.autoLayoutStart = LayoutStart.TopLeft;
-                    _marqueeScrollablePanel.autoLayoutDirection = LayoutDirection.Horizontal;
+                    _marqueeScrollablePanel.isInteractive = false;
                     _marqueeScrollablePanel.clipChildren = true;
 
+                    _marqueeDragHandle = UIUtils.CreateDragHandle(infoPanel, "StreamItMarqueeDragHandle", _marqueeScrollablePanel);
+                    _marqueeDragHandle.anchor = UIAnchorStyle.Top | UIAnchorStyle.Left;
+                    _marqueeDragHandle.eventDragStart += (component, eventParam) =>
+                    {
+                        if (_isScrolling)
+                        {
+                            StopScrolling();
+                        }
+                    };
+                    _marqueeDragHandle.eventMouseUp += (component, eventParam) =>
+                    {
+                        ModConfig.Instance.PositionX = _marqueeScrollablePanel.relativePosition.x;
+                        ModConfig.Instance.PositionY = _marqueeScrollablePanel.relativePosition.y;
+                        ModConfig.Instance.Save();
+
+                        if (!_isScrolling)
+                        {
+                            UpdateMarquee();
+                            StartScrollingIfNeeded();
+                        }
+                    };
+
                     _marqueeLabel = UIUtils.CreateLabel(_marqueeScrollablePanel, "StreamItMarqueeLabel", "No mods found.");
+                    _marqueeLabel.isInteractive = false;
                 }
             }
             catch (Exception e)
             {
-                Debug.Log("[Stream It!] StreamPanel:CreateMarquee -> Exception: " + e.Message);
+                Debug.Log("[Stream It!] Streamer:CreateMarquee -> Exception: " + e.Message);
             }
         }
 
@@ -165,25 +212,37 @@ namespace StreamIt
         {
             try
             {
-                float topOffset;
+                float positionX = ModConfig.Instance.PositionX;
+                float positionY = ModConfig.Instance.PositionY;
 
-                if (_chirperPanel != null && _chirperPanel.isEnabled)
+                if (positionX == 0.0f && positionY == 0.0f)
                 {
-                    topOffset = 134;
-                }
-                else
-                {
-                    topOffset = 64;
+                    float topOffset;
+
+                    if (_chirperPanel != null && _chirperPanel.isEnabled)
+                    {
+                        topOffset = 134;
+                    }
+                    else
+                    {
+                        topOffset = 64;
+                    }
+
+                    positionX = UIView.GetAView().GetScreenResolution().x / 2f - _marqueeScrollablePanel.width / 2f;
+                    positionY = 0 - UIView.GetAView().GetScreenResolution().y + topOffset;
                 }
 
                 _marqueeScrollablePanel.size = new Vector3(ModConfig.Instance.Width, 44);
-                _marqueeScrollablePanel.relativePosition = new Vector3(_marqueeScrollablePanel.parent.width / 2f - _marqueeScrollablePanel.width / 2f, 0 - UIView.GetAView().GetScreenResolution().y + topOffset);
+                _marqueeScrollablePanel.relativePosition = new Vector3(positionX, positionY);
+
+                _marqueeDragHandle.size = _marqueeScrollablePanel.size;
+                _marqueeDragHandle.relativePosition = _marqueeScrollablePanel.relativePosition;
 
                 _marqueeLabel.textScale = ModConfig.Instance.TextScale;
             }
             catch (Exception e)
             {
-                Debug.Log("[Stream It!] StreamPanel:UpdateMarquee -> Exception: " + e.Message);
+                Debug.Log("[Stream It!] Streamer:UpdateMarquee -> Exception: " + e.Message);
             }
         }
 
@@ -203,7 +262,7 @@ namespace StreamIt
             }
             catch (Exception e)
             {
-                Debug.Log("[Stream It!] StreamPanel:StartScrollingIfNeeded -> Exception: " + e.Message);
+                Debug.Log("[Stream It!] Streamer:StartScrollingIfNeeded -> Exception: " + e.Message);
             }
         }
 
@@ -215,7 +274,7 @@ namespace StreamIt
             }
             catch (Exception e)
             {
-                Debug.Log("[Stream It!] StreamPanel:WaitAndStartScrolling -> Exception: " + e.Message);
+                Debug.Log("[Stream It!] Streamer:WaitAndStartScrolling -> Exception: " + e.Message);
             }
         }
 
@@ -237,7 +296,7 @@ namespace StreamIt
             }
             catch (Exception e)
             {
-                Debug.Log("[Stream It!] StreamPanel:StartScrolling -> Exception: " + e.Message);
+                Debug.Log("[Stream It!] Streamer:StartScrolling -> Exception: " + e.Message);
             }
         }
 
@@ -250,7 +309,7 @@ namespace StreamIt
             }
             catch (Exception e)
             {
-                Debug.Log("[Stream It!] StreamPanel:OnCompletedScrolling -> Exception: " + e.Message);
+                Debug.Log("[Stream It!] Streamer:OnCompletedScrolling -> Exception: " + e.Message);
             }
         }
 
@@ -264,31 +323,7 @@ namespace StreamIt
             }
             catch (Exception e)
             {
-                Debug.Log("[Stream It!] StreamPanel:StopScrolling -> Exception: " + e.Message);
-            }
-        }
-
-        private void OnDisable()
-        {
-            try
-            {
-
-            }
-            catch (Exception e)
-            {
-                Debug.Log("[Stream It!] StreamPanel:OnDisable -> Exception: " + e.Message);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            try
-            {
-
-            }
-            catch (Exception e)
-            {
-                Debug.Log("[Stream It!] StreamPanel:OnDestroy -> Exception: " + e.Message);
+                Debug.Log("[Stream It!] Streamer:StopScrolling -> Exception: " + e.Message);
             }
         }
     }

@@ -25,21 +25,21 @@ namespace StreamIt
                 ModConfig.Instance.Save();
             });
 
-            selectedText = ModConfig.Instance.Prefix ?? "";
+            selectedText = ModConfig.Instance.Prefix;
             group.AddTextfield("Prefix", selectedText, sel =>
             {
                 ModConfig.Instance.Prefix = sel;
                 ModConfig.Instance.Save();
             });
 
-            selectedText = ModConfig.Instance.Suffix ?? "";
+            selectedText = ModConfig.Instance.Suffix;
             group.AddTextfield("Suffix", selectedText, sel =>
             {
                 ModConfig.Instance.Suffix = sel;
                 ModConfig.Instance.Save();
             });
 
-            selectedValue = ModConfig.Instance.Width != 0f ? ModConfig.Instance.Width : UIView.GetAView().GetScreenResolution().x / 2f;
+            selectedValue = ModConfig.Instance.Width;
 
             group.AddTextfield("Width (in pixels)", selectedValue.ToString(), sel =>
             {
@@ -48,7 +48,7 @@ namespace StreamIt
                 ModConfig.Instance.Save();
             });
 
-            selectedValue = ModConfig.Instance.TextScale != 0f ? ModConfig.Instance.TextScale : 1f;
+            selectedValue = ModConfig.Instance.TextScale;
 
             group.AddSlider("Text Scale", 0.5f, 2f, 0.1f, selectedValue, sel =>
             {
@@ -56,7 +56,7 @@ namespace StreamIt
                 ModConfig.Instance.Save();
             });
 
-            selectedValue = ModConfig.Instance.Speed != 0f ? ModConfig.Instance.Speed : 20f;
+            selectedValue = ModConfig.Instance.Speed;
 
             group.AddSlider("Speed", 5f, 50f, 0.5f, selectedValue, sel =>
             {
@@ -64,9 +64,16 @@ namespace StreamIt
                 ModConfig.Instance.Save();
             });
 
+            group.AddButton("Reset position", () =>
+            {
+                ModConfig.Instance.PositionX = 0.0f;
+                ModConfig.Instance.PositionY = 0.0f;
+                ModConfig.Instance.Save();
+            });
+
             group = helper.AddGroup("Export to file");
 
-            selectedText = ModConfig.Instance.FileName ?? "";
+            selectedText = ModConfig.Instance.FileName;
             group.AddTextfield("File name", selectedText, sel =>
             {
                 ModConfig.Instance.FileName = sel;
