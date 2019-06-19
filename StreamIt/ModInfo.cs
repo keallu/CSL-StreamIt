@@ -18,56 +18,76 @@ namespace StreamIt
 
             group = helper.AddGroup(Name);
 
-            selected = ModConfig.Instance.Enabled;
-            group.AddCheckbox("Stream enabled", selected, sel =>
+            selected = ModConfig.Instance.ModsPanelEnabled;
+            group.AddCheckbox("Enabled", selected, sel =>
             {
-                ModConfig.Instance.Enabled = sel;
+                ModConfig.Instance.ModsPanelEnabled = sel;
                 ModConfig.Instance.Save();
             });
 
-            selectedText = ModConfig.Instance.Prefix;
+            selectedText = ModConfig.Instance.ModsPanelPrefix;
             group.AddTextfield("Prefix", selectedText, sel =>
             {
-                ModConfig.Instance.Prefix = sel;
+                ModConfig.Instance.ModsPanelPrefix = sel;
                 ModConfig.Instance.Save();
             });
 
-            selectedText = ModConfig.Instance.Suffix;
+            selectedText = ModConfig.Instance.ModsPanelSuffix;
             group.AddTextfield("Suffix", selectedText, sel =>
             {
-                ModConfig.Instance.Suffix = sel;
+                ModConfig.Instance.ModsPanelSuffix = sel;
                 ModConfig.Instance.Save();
             });
 
-            selectedValue = ModConfig.Instance.Width;
-
+            selectedValue = ModConfig.Instance.ModsPanelWidth;
             group.AddTextfield("Width (in pixels)", selectedValue.ToString(), sel =>
             {
                 float.TryParse(sel, out result);
-                ModConfig.Instance.Width = result;
+                ModConfig.Instance.ModsPanelWidth = result;
                 ModConfig.Instance.Save();
             });
 
-            selectedValue = ModConfig.Instance.TextScale;
-
+            selectedValue = ModConfig.Instance.ModsPanelTextScale;
             group.AddSlider("Text Scale", 0.5f, 2f, 0.1f, selectedValue, sel =>
             {
-                ModConfig.Instance.TextScale = sel;
+                ModConfig.Instance.ModsPanelTextScale = sel;
                 ModConfig.Instance.Save();
             });
 
-            selectedValue = ModConfig.Instance.Speed;
-
+            selectedValue = ModConfig.Instance.ModsPanelSpeed;
             group.AddSlider("Speed", 5f, 50f, 0.5f, selectedValue, sel =>
             {
-                ModConfig.Instance.Speed = sel;
+                ModConfig.Instance.ModsPanelSpeed = sel;
                 ModConfig.Instance.Save();
             });
 
             group.AddButton("Reset position", () =>
             {
-                ModConfig.Instance.PositionX = 0.0f;
-                ModConfig.Instance.PositionY = 0.0f;
+                ModConfig.Instance.ModsPanelPositionX = 0.0f;
+                ModConfig.Instance.ModsPanelPositionY = 0.0f;
+                ModConfig.Instance.Save();
+            });
+
+            group = helper.AddGroup("Graphics");
+
+            selected = ModConfig.Instance.GraphicsPanelEnabled;
+            group.AddCheckbox("Enabled", selected, sel =>
+            {
+                ModConfig.Instance.GraphicsPanelEnabled = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selectedValue = ModConfig.Instance.GraphicsPanelTextScale;
+            group.AddSlider("Text Scale", 0.5f, 2f, 0.1f, selectedValue, sel =>
+            {
+                ModConfig.Instance.GraphicsPanelTextScale = sel;
+                ModConfig.Instance.Save();
+            });
+
+            group.AddButton("Reset position", () =>
+            {
+                ModConfig.Instance.GraphicsPanelPositionX = 0.0f;
+                ModConfig.Instance.GraphicsPanelPositionY = 0.0f;
                 ModConfig.Instance.Save();
             });
 
