@@ -26,11 +26,20 @@ namespace StreamIt
                     sw.WriteLine(@"<meta charset=""utf-8"" />");
                     sw.WriteLine(@"<title>Stream It! - Cities: Skylines - List of Mods</title>");
                     sw.WriteLine(@"<style>");
-                    sw.WriteLine(@"table {border: 3px solid #000000;text-align: left;border-collapse: collapse;}");
-                    sw.WriteLine(@"table td, table th {border: 1px solid #000000;padding: 5px 4px;}");
-                    sw.WriteLine(@"table tbody td {font-size: 13px;}");
-                    sw.WriteLine(@"table thead {background: #CFCFCF;border-bottom: 3px solid #000000;}");
-                    sw.WriteLine(@"table thead th {font-size: 15px;font-weight: bold;color: #000000;text-align: left;}");
+                    sw.WriteLine(@":root { --divider: rgba(0, 0, 0, 0.12); }");
+                    sw.WriteLine(@"body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; margin: 0;}");
+                    sw.WriteLine(@"h1 { font-weight: 300; letter-spacing: -1.5px; display: block; box-sizing: border-box; max-height: 64px; max-width: 100%; background-color: #3700b3; color: #fff; margin: 0; padding: 16px; }");
+                    sw.WriteLine(@"table { border: 0; border-spacing: 0; width: 100%; }");
+                    sw.WriteLine(@"thead { background-color: #6200ee; color: #fff; margin: 0; }");
+                    sw.WriteLine(@"th { font-weight: 600; height: 48px; border-block-end: 2px solid var(--divider);  word-wrap: break-word; }");
+                    sw.WriteLine(@"td { font-weight: 350; height: 47px; padding-top:6px; padding-bottom: 6px; border-block-end: 1px solid var(--divider); }");
+                    sw.WriteLine(@"td > a { font-weight: 600; font-size: 14px; text-transform: uppercase; text-decoration: none; }");
+                    sw.WriteLine(@"td > a:hover { text-decoration: underline; }");
+                    sw.WriteLine(@"th, td { text-align: left; vertical-align: middle; }");
+                    sw.WriteLine(@"th:first-child, td:first-child, p { font-weight: 600; padding-left: 16px; padding-right:12px; }");
+                    sw.WriteLine(@"td:nth-child(2n) { max-width: 50%; padding-right: 12px;}");
+                    sw.WriteLine(@"th:nth-child(3n) { min-width: 100px; padding-right: 12px;}");
+                    sw.WriteLine(@"th:last-child, td:last-child { min-width: 100px; padding-right: 16px; text-align: right; }");
                     sw.WriteLine(@"</style>");
                     sw.WriteLine(@"</head>");
                     sw.WriteLine(@"<body>");
@@ -72,10 +81,10 @@ namespace StreamIt
                             sw.WriteLine(@"<tr>");
                             sw.WriteLine(@"<td>" + instances[0].Name + @"</td>");
                             sw.WriteLine(@"<td>" + instances[0].Description + @"</td>");
-                            sw.WriteLine(@"<td>" + id + @"</td>");
+                            sw.WriteLine(@"<td><a target=""_blank"" href=""https://steamcommunity.com/sharedfiles/filedetails/?id=" + id.ToString() + @""">" + id + @"</a></td>");
 
                             if (id > 0)
-                                sw.WriteLine(@"<td><a target=""_blank"" href=""https://steamcommunity.com/sharedfiles/filedetails/?id=" + id.ToString() + @""">Link</a><br /><a href=""steam://url/CommunityFilePage/" + id.ToString() + @""">Open in Steam</a></td>");
+                                sw.WriteLine(@"<td><a href=""steam://url/CommunityFilePage/" + id.ToString() + @""">Open in Steam</a></td>");
                             else
                                 sw.WriteLine(@"<td>&nbsp;</td>");
 
