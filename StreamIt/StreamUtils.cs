@@ -75,7 +75,7 @@ namespace StreamIt
                             sw.WriteLine(@"<td>" + id + @"</td>");
 
                             if (id > 0)
-                                sw.WriteLine(@"<td><a target=""_blank"" href=""https://steamcommunity.com/sharedfiles/filedetails/?id=" + id.ToString() + @""">Link</a></td>");
+                                sw.WriteLine(@"<td><a target=""_blank"" href=""https://steamcommunity.com/sharedfiles/filedetails/?id=" + id.ToString() + @""">Link</a><br /><a href=""steam://url/CommunityFilePage/" + id.ToString() + @""">Open in Steam</a></td>");
                             else
                                 sw.WriteLine(@"<td>&nbsp;</td>");
 
