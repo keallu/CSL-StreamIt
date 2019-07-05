@@ -52,7 +52,7 @@ namespace StreamIt
                     sw.WriteLine(@"<th>Steam Workshop ID</th>");
                     sw.WriteLine(@"<th>Link to Steam Workshop</th>");
                     sw.WriteLine(@"</tr>");
-                    sw.WriteLine(@"<thead>");
+                    sw.WriteLine(@"</thead>");
                     sw.WriteLine(@"<tbody>");
 
                     foreach (PluginManager.PluginInfo pluginInfo in Singleton<PluginManager>.instance.GetPluginsInfo())
